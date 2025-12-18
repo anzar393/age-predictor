@@ -1,52 +1,218 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Fun Age Predictor</title>
+  <meta charset="UTF-8">
+  <title>💀 Ultimate Horror World 💀</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: Arial;
-      background: #111;
-      color: #fff;
-      text-align: center;
-      padding: 30px;
+      font-family: 'Creepster', cursive;
+      margin: 0;
+      background: black;
+      color: #ff0000;
+      line-height: 1.6;
+      overflow-x: hidden;
     }
+
+    h1, h2 {
+      text-align: center;
+      text-shadow: 0 0 10px red, 0 0 20px orange;
+    }
+
+    section {
+      padding: 50px 20px;
+      border-bottom: 2px solid #660000;
+    }
+
+    /* Ghost animation */
+    .floating {
+      position: relative;
+      animation: float 3s ease-in-out infinite;
+      transition: transform 0.3s;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+      100% { transform: translateY(0px); }
+    }
+
+    img {
+      max-width: 100%;
+      border: 3px solid red;
+      margin: 10px 0;
+      box-shadow: 0 0 20px red;
+      border-radius: 10px;
+    }
+
+    .articles, .knowledge {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .article, .fact {
+      background: #111;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .article:hover, .fact:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 40px red;
+    }
+
+    /* Predictor Section */
+    .predictor {
+      text-align: center;
+      background: #111;
+      padding: 40px 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 30px red;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
     input, button {
-      padding: 10px;
-      margin: 10px;
+      padding: 12px;
+      margin: 10px 0;
       width: 80%;
       max-width: 300px;
-    }
-    button {
-      background: red;
-      color: white;
+      border-radius: 8px;
       border: none;
-      cursor: pointer;
+      font-size: 16px;
     }
+
+    input {
+      background: #222;
+      color: #fff;
+      border: 2px solid #ff0000;
+    }
+
+    input::placeholder {
+      color: #ff6666;
+    }
+
+    button {
+      background: #ff0000;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #660000;
+      transform: scale(1.1);
+      box-shadow: 0 0 20px red;
+    }
+
     .result {
       margin-top: 20px;
       font-size: 20px;
       color: yellow;
+      text-shadow: 0 0 10px orange, 0 0 20px red;
+      animation: pulse 1.5s infinite;
     }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
   </style>
 </head>
 <body>
 
-  <h1>😱 Life Age Predictor 😱</h1>
-  <p>Enter your age to see your future</p>
+  <!-- Part 1: Ghost Articles -->
+  <section id="ghost-articles">
+    <h1>👻 Scary Ghost Stories & Images 👻</h1>
+    <div class="articles">
+      <div class="article">
+        <h2>The Haunted Mansion</h2>
+        <img class="floating" src="https://i.ibb.co/QYVh9yX/ghost1.jpg" alt="Ghost Image">
+        <p>Visitors report hearing whispers and footsteps in the dark corridors.</p>
+      </div>
+      <div class="article">
+        <h2>Shadow in the Woods</h2>
+        <img class="floating" src="https://i.ibb.co/7WcR7QN/ghost2.jpg" alt="Ghost Image">
+        <p>A mysterious shadow follows hikers at night, vanishing without a trace.</p>
+      </div>
+      <div class="article">
+        <h2>The Phantom Room</h2>
+        <img class="floating" src="https://i.ibb.co/Yt3DFr9/ghost3.jpg" alt="Ghost Image">
+        <p>People say the room is cursed; objects move on their own.</p>
+      </div>
+    </div>
+  </section>
 
-  <input type="number" id="age" placeholder="Enter your age">
-  <button onclick="predict()">Check</button>
+  <!-- Part 2: Horror Age Predictor -->
+  <section id="predictor-section">
+    <h1>💀 Predict Your Dark Fate 💀</h1>
+    <div class="predictor">
+      <input type="text" id="name" placeholder="Enter your Name">
+      <input type="date" id="dob" placeholder="Date of Birth">
+      <input type="time" id="birthtime" placeholder="Birth Time">
+      <input type="number" id="hairfall" placeholder="Hairfall %">
+      <button onclick="predict()">Reveal My Fate</button>
+      <div class="result" id="result"></div>
+    </div>
+  </section>
 
-  <div class="result" id="result"></div>
+  <!-- Part 3: Ghost Knowledge -->
+  <section id="ghost-knowledge">
+    <h1>💀 Ghost Knowledge & Fun Facts 💀</h1>
+    <div class="knowledge">
+      <div class="fact">
+        <img class="floating" src="https://i.ibb.co/7WcR7QN/ghost2.jpg" alt="Ghost Fact">
+        <p>Fact: Some ghosts are said to only appear at midnight under a full moon 🌕.</p>
+      </div>
+      <div class="fact">
+        <img class="floating" src="https://i.ibb.co/Yt3DFr9/ghost3.jpg" alt="Ghost Fact">
+        <p>Fact: Hair loss is rumored to attract spirits at night (fake but spooky!) 👻</p>
+      </div>
+      <div class="fact">
+        <img class="floating" src="https://i.ibb.co/QYVh9yX/ghost1.jpg" alt="Ghost Fact">
+        <p>Fact: Whispering your name three times may call a ghost (just for fun!) 😈</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sounds -->
+  <audio id="scarySound" src="https://www.soundjay.com/horror/sounds/horror-ghost-1.mp3" preload="auto"></audio>
 
   <script>
     function predict() {
-      var age = document.getElementById("age").value;
-      if(age === "") {
-        alert("Enter age");
+      var name = document.getElementById("name").value;
+      var dob = document.getElementById("dob").value;
+      var birthtime = document.getElementById("birthtime").value;
+      var hairfall = document.getElementById("hairfall").value;
+
+      if(!name || !dob || !birthtime || !hairfall) {
+        alert("Fill all fields... if you dare!");
         return;
       }
-      v
 
-    
+      // Play scary sound
+      var sound = document.getElementById("scarySound");
+      sound.currentTime = 0;
+      sound.play();
+
+      // creepy prediction logic
+      var age = Math.floor(Math.random() * 30 + 20);
+      var messages = [
+        `💀 ${name}, the spirits predict your end at age ${age} 💀`,
+        `👻 Beware ${name}! Darkness waits till you are ${age} 👻`,
+        `☠️ ${name}, your hairfall invites dark forces. You might not live past ${age} ☠️`,
+        `😈 ${name}, destiny whispers: ${age} years left 😈`
+      ];
+
+      var index = Math.floor(Math.random() * messages.length);
+      document.getElementById("result").innerHTML = messages[index];
+    }
+  </script>
+
+</body>
+</html>
