@@ -1,218 +1,272 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>💀 Ultimate Horror World 💀</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Creepster', cursive;
-      margin: 0;
-      background: black;
-      color: #ff0000;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    h1, h2 {
-      text-align: center;
-      text-shadow: 0 0 10px red, 0 0 20px orange;
-    }
-
-    section {
-      padding: 50px 20px;
-      border-bottom: 2px solid #660000;
-    }
-
-    /* Ghost animation */
-    .floating {
-      position: relative;
-      animation: float 3s ease-in-out infinite;
-      transition: transform 0.3s;
-    }
-
-    @keyframes float {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-15px); }
-      100% { transform: translateY(0px); }
-    }
-
-    img {
-      max-width: 100%;
-      border: 3px solid red;
-      margin: 10px 0;
-      box-shadow: 0 0 20px red;
-      border-radius: 10px;
-    }
-
-    .articles, .knowledge {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-
-    .article, .fact {
-      background: #111;
-      padding: 15px;
-      border-radius: 10px;
-      text-align: center;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .article:hover, .fact:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 40px red;
-    }
-
-    /* Predictor Section */
-    .predictor {
-      text-align: center;
-      background: #111;
-      padding: 40px 20px;
-      border-radius: 15px;
-      box-shadow: 0 0 30px red;
-      max-width: 500px;
-      margin: 0 auto;
-    }
-
-    input, button {
-      padding: 12px;
-      margin: 10px 0;
-      width: 80%;
-      max-width: 300px;
-      border-radius: 8px;
-      border: none;
-      font-size: 16px;
-    }
-
-    input {
-      background: #222;
-      color: #fff;
-      border: 2px solid #ff0000;
-    }
-
-    input::placeholder {
-      color: #ff6666;
-    }
-
-    button {
-      background: #ff0000;
-      color: #fff;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      background: #660000;
-      transform: scale(1.1);
-      box-shadow: 0 0 20px red;
-    }
-
-    .result {
-      margin-top: 20px;
-      font-size: 20px;
-      color: yellow;
-      text-shadow: 0 0 10px orange, 0 0 20px red;
-      animation: pulse 1.5s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-    }
-
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamMaster - Your Ultimate Exam Prep Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        .container {
+            display: none; /* Hidden until login */
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            padding: 50px 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .header p {
+            font-size: 1.2rem;
+            color: #e0e0e0;
+            margin-top: 10px;
+        }
+        .articles {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .article-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+        .article-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .article-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .article-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .article-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+        .article-card .read-more {
+            display: inline-block;
+            margin-top: 15px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .article-card .read-more:hover {
+            color: #764ba2;
+        }
+        .modal {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        .modal h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background 0.3s;
+            width: 100%;
+        }
+        .btn:hover {
+            background: linear-gradient(135deg, #764ba2, #667eea);
+        }
+        .toggle {
+            margin-top: 15px;
+            color: #667eea;
+            cursor: pointer;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            margin-top: 50px;
+            border-radius: 15px;
+        }
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            .articles {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-
-  <!-- Part 1: Ghost Articles -->
-  <section id="ghost-articles">
-    <h1>👻 Scary Ghost Stories & Images 👻</h1>
-    <div class="articles">
-      <div class="article">
-        <h2>The Haunted Mansion</h2>
-        <img class="floating" src="https://i.ibb.co/QYVh9yX/ghost1.jpg" alt="Ghost Image">
-        <p>Visitors report hearing whispers and footsteps in the dark corridors.</p>
-      </div>
-      <div class="article">
-        <h2>Shadow in the Woods</h2>
-        <img class="floating" src="https://i.ibb.co/7WcR7QN/ghost2.jpg" alt="Ghost Image">
-        <p>A mysterious shadow follows hikers at night, vanishing without a trace.</p>
-      </div>
-      <div class="article">
-        <h2>The Phantom Room</h2>
-        <img class="floating" src="https://i.ibb.co/Yt3DFr9/ghost3.jpg" alt="Ghost Image">
-        <p>People say the room is cursed; objects move on their own.</p>
-      </div>
+    <!-- Login/Signup Modal -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <h2 id="modal-title">Sign Up</h2>
+            <form id="auth-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn">Submit</button>
+            </form>
+            <div class="toggle" onclick="toggleAuth()">Already have an account? Log In</div>
+        </div>
     </div>
-  </section>
 
-  <!-- Part 2: Horror Age Predictor -->
-  <section id="predictor-section">
-    <h1>💀 Predict Your Dark Fate 💀</h1>
-    <div class="predictor">
-      <input type="text" id="name" placeholder="Enter your Name">
-      <input type="date" id="dob" placeholder="Date of Birth">
-      <input type="time" id="birthtime" placeholder="Birth Time">
-      <input type="number" id="hairfall" placeholder="Hairfall %">
-      <button onclick="predict()">Reveal My Fate</button>
-      <div class="result" id="result"></div>
+    <!-- Main Content (Hidden Initially) -->
+    <div class="container" id="main-content">
+        <div class="header">
+            <h1>Welcome to ExamMaster</h1>
+            <p>Unlock your potential with expert exam tips, strategies, and resources.</p>
+        </div>
+        <div class="articles">
+            <!-- Article 1 -->
+            <div class="article-card">
+                <img src="https://via.placeholder.com/300x200/667eea/ffffff?text=Study+Tips" alt="Study Tips">
+                <h3>10 Proven Study Techniques for Exam Success</h3>
+                <p>Discover active recall, spaced repetition, and more to ace your exams. These modern methods are backed by neuroscience and can boost retention by up to 50%.</p>
+                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <!-- Article 2 -->
+            <div class="article-card">
+                <img src="https://via.placeholder.com/300x200/764ba2/ffffff?text=Math+Prep" alt="Math Prep">
+                <h3>Mastering Math: From Basics to Advanced Calculus</h3>
+                <p>A comprehensive guide to conquering math exams. Includes interactive examples, common pitfalls, and tips for visualizing complex problems.</p>
+                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <!-- Article 3 -->
+            <div class="article-card">
+                <img src="https://via.placeholder.com/300x200/667eea/ffffff?text=Time+Management" alt="Time Management">
+                <h3>Time Management Hacks for Busy Students</h3>
+                <p>Learn to juggle studies, work, and life. Our blog covers Pomodoro techniques, apps, and real-life success stories from top performers.</p>
+                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <!-- Article 4 -->
+            <div class="article-card">
+                <img src="https://via.placeholder.com/300x200/764ba2/ffffff?text=Motivation" alt="Motivation">
+                <h3>Staying Motivated: Overcoming Exam Anxiety</h3>
+                <p>Psychological insights and practical advice to build resilience. Featuring guest posts from psychologists and motivational speakers.</p>
+                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <!-- Article 5 -->
+            <div class="article-card">
+                <img src="https://via.placeholder.com/300x200/667eea/ffffff?text=Science+Exams" alt="Science Exams">
+                <h3>Cracking Science Exams: Biology, Chemistry, Physics</h3>
+                <p>In-depth breakdowns of key concepts, experiment simulations, and mnemonics to remember formulas. Perfect for STEM students.</p>
+                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <!-- Article 6 -->
+            <div class="article-card">
+                <img src="https://via.placeholder.com/300x200/764ba2/ffffff?text=Career+Advice" alt="Career Advice">
+                <h3>From Exams to Careers: Building Your Future</h3>
+                <p>Post-exam planning: Resume tips, interview prep, and industry insights. Attract recruiters with our modern career guides.</p>
+                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="footer">
+            <p>&copy; 2023 ExamMaster. All rights reserved. | Follow us on <i class="fab fa-twitter"></i> <i class="fab fa-facebook"></i></p>
+        </div>
     </div>
-  </section>
 
-  <!-- Part 3: Ghost Knowledge -->
-  <section id="ghost-knowledge">
-    <h1>💀 Ghost Knowledge & Fun Facts 💀</h1>
-    <div class="knowledge">
-      <div class="fact">
-        <img class="floating" src="https://i.ibb.co/7WcR7QN/ghost2.jpg" alt="Ghost Fact">
-        <p>Fact: Some ghosts are said to only appear at midnight under a full moon 🌕.</p>
-      </div>
-      <div class="fact">
-        <img class="floating" src="https://i.ibb.co/Yt3DFr9/ghost3.jpg" alt="Ghost Fact">
-        <p>Fact: Hair loss is rumored to attract spirits at night (fake but spooky!) 👻</p>
-      </div>
-      <div class="fact">
-        <img class="floating" src="https://i.ibb.co/QYVh9yX/ghost1.jpg" alt="Ghost Fact">
-        <p>Fact: Whispering your name three times may call a ghost (just for fun!) 😈</p>
-      </div>
-    </div>
-  </section>
+    <script>
+        let isSignUp = true;
+        const modal = document.getElementById('auth-modal');
+        const mainContent = document.getElementById('main-content');
+        const form = document.getElementById('auth-form');
+        const modalTitle = document.getElementById('modal-title');
 
-  <!-- Sounds -->
-  <audio id="scarySound" src="https://www.soundjay.com/horror/sounds/horror-ghost-1.mp3" preload="auto"></audio>
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Simulate authentication (in real app, send to server)
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            if (email && password) {
+                modal.style.display = 'none';
+                mainContent.style.display = 'block';
+                alert(isSignUp ? 'Account created successfully!' : 'Logged in successfully!');
+            }
+        });
 
-  <script>
-    function predict() {
-      var name = document.getElementById("name").value;
-      var dob = document.getElementById("dob").value;
-      var birthtime = document.getElementById("birthtime").value;
-      var hairfall = document.getElementById("hairfall").value;
-
-      if(!name || !dob || !birthtime || !hairfall) {
-        alert("Fill all fields... if you dare!");
-        return;
-      }
-
-      // Play scary sound
-      var sound = document.getElementById("scarySound");
-      sound.currentTime = 0;
-      sound.play();
-
-      // creepy prediction logic
-      var age = Math.floor(Math.random() * 30 + 20);
-      var messages = [
-        `💀 ${name}, the spirits predict your end at age ${age} 💀`,
-        `👻 Beware ${name}! Darkness waits till you are ${age} 👻`,
-        `☠️ ${name}, your hairfall invites dark forces. You might not live past ${age} ☠️`,
-        `😈 ${name}, destiny whispers: ${age} years left 😈`
-      ];
-
-      var index = Math.floor(Math.random() * messages.length);
-      document.getElementById("result").innerHTML = messages[index];
-    }
-  </script>
-
+        function toggleAuth() {
+            isSignUp = !isSignUp;
+            modalTitle.textContent = isSignUp ? 'Sign Up' : 'Log In';
+            document.querySelector('.toggle').textContent = isSignUp ? 'Already have an account? Log In' : 'Don\'t have an account? Sign Up';
+        }
+    </script>
 </body>
 </html>
