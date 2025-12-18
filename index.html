@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fun Age Predictor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial;
+      background: #111;
+      color: #fff;
+      text-align: center;
+      padding: 30px;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      width: 80%;
+      max-width: 300px;
+    }
+    button {
+      background: red;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 20px;
+      color: yellow;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>😱 Life Age Predictor 😱</h1>
+  <p>Enter your age to see your future</p>
+
+  <input type="number" id="age" placeholder="Enter your age">
+  <button onclick="predict()">Check</button>
+
+  <div class="result" id="result"></div>
+
+  <script>
+    function predict() {
+      var age = document.getElementById("age").value;
+      if(age === "") {
+        alert("Enter age");
+        return;
+      }
+      var future = Number(age) + Math.floor(Math.random() * 30 + 10);
+      document.getElementById("result").innerHTML =
+        "😲 Your predicted life age is: " + future;
+    }
+  </script>
+
+</body>
+</html>
