@@ -1,134 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mini ChatGPT</title>
-
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #343541;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-header {
-  background: #202123;
-  padding: 15px;
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-#chat-box {
-  flex: 1;
-  overflow-y: auto;
-  padding: 15px;
-}
-
-.message {
-  max-width: 75%;
-  padding: 10px 14px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  line-height: 1.4;
-}
-
-.user {
-  background: #0b5cff;
-  align-self: flex-end;
-  margin-left: auto;
-}
-
-.bot {
-  background: #444654;
-  align-self: flex-start;
-  margin-right: auto;
-}
-
-footer {
-  display: flex;
-  padding: 10px;
-  background: #202123;
-}
-
-input {
-  flex: 1;
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 6px;
-  border: none;
-  outline: none;
-}
-
-button {
-  margin-left: 10px;
-  padding: 10px 15px;
-  font-size: 16px;
-  background: #0b5cff;
-  border: none;
-  border-radius: 6px;
-  color: white;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #0848c4;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeChat AI - Your Intelligent Coding Companion</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+        body {
+            background: #0a0a0a;
+            color: #e0e0e0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+        .header h1 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #00ff88;
+            text-shadow: 0 0 10px #00ff88;
+        }
+        .header p {
+            font-size: 1rem;
+            color: #b0b0b0;
+            margin-top: 5px;
+        }
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            overflow-y: auto;
+            background: #0f0f0f;
+        }
+        .chat-messages {
+            flex: 1;
+            margin-bottom: 20px;
+        }
+        .message {
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 80%;
+            word-wrap: break-word;
+            animation: fadeIn 0.5s ease-in;
+        }
+        .message.user {
+            background: #00ff88;
+            color: #0a0a0a;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        .message.ai {
+            background: #1a1a1a;
+            border-left: 4px solid #00ff88;
+        }
+        .message .sender {
+            font-weight: 500;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 5px;
+        }
+        .typing-indicator {
+            display: none;
+            font-style: italic;
+            color: #00ff88;
+            margin-bottom: 15px;
+        }
+        .chat-input-container {
+            display: flex;
+            padding: 20px;
+            background: #1a1a1a;
+            border-top: 1px solid #333;
+        }
+        .chat-input {
+            flex: 1;
+            padding: 15px;
+            border: 1px solid #333;
+            border-radius: 25px;
+            background: #0f0f0f;
+            color: #e0e0e0;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .chat-input:focus {
+            border-color: #00ff88;
+            box-shadow: 0 0 10px rgba(0,255,136,0.5);
+        }
+        .send-btn {
+            background: #00ff88;
+            color: #0a0a0a;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 25px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s, transform 0.2s;
+        }
+        .send-btn:hover {
+            background: #00cc66;
+            transform: scale(1.05);
+        }
+        .send-btn:active {
+            transform: scale(0.95);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            .message {
+                max-width: 90%;
+            }
+        }
+    </style>
 </head>
-
 <body>
+    <div class="header">
+        <h1>CodeChat AI</h1>
+        <p>Powered by advanced AI for coding, queries, and conversations</p>
+    </div>
+    <div class="chat-container">
+        <div class="chat-messages" id="chat-messages">
+            <div class="message ai">
+                <div class="sender">CodeChat AI:</div>
+                Hello! I'm CodeChat AI, your intelligent assistant. Ask me anything about coding, exams, or general queries. How can I help you today?
+            </div>
+        </div>
+        <div class="typing-indicator" id="typing-indicator">CodeChat AI is typing...</div>
+    </div>
+    <div class="chat-input-container">
+        <input type="text" class="chat-input" id="chat-input" placeholder="Type your message here...">
+        <button class="send-btn" id="send-btn"><i class="fas fa-paper-plane"></i> Send</button>
+    </div>
 
-<header>Mini ChatGPT</header>
+    <script>
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
+        const typingIndicator = document.getElementById('typing-indicator');
 
-<div id="chat-box"></div>
+        // Simulated AI responses (expand with real API)
+        const responses = [
+            "That's an interesting question! Let me think... Based on my knowledge, here's what I can say.",
+            "Great point! In coding, it's all about efficiency. Here's a code snippet to illustrate.",
+            "I see. For exam prep, try breaking down topics into smaller chunks. What subject are you focusing on?",
+            "Absolutely! AI like me is here to assist. Do you have a specific example or code you'd like help with?",
+            "Hmm, that's tricky. Let's debug this step by step. Can you provide more details?"
+        ];
 
-<footer>
-  <input type="text" id="userInput" placeholder="Send a message..." />
-  <button onclick="sendMessage()">Send</button>
-</footer>
+        function addMessage(content, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            messageDiv.innerHTML = `<div class="sender">${sender === 'user' ? 'You:' : 'CodeChat AI:'}</div>${content}`;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
 
-<script>
-const chatBox = document.getElementById("chat-box");
+        function simulateTyping() {
+            typingIndicator.style.display = 'block';
+            setTimeout(() => {
+                typingIndicator.style.display = 'none';
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                addMessage(randomResponse, 'ai');
+            }, 1500); // Simulate 1.5s typing delay
+        }
 
-function addMessage(text, className) {
-  const div = document.createElement("div");
-  div.className = "message " + className;
-  div.innerText = text;
-  chatBox.appendChild(div);
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
+        sendBtn.addEventListener('click', () => {
+            const message = chatInput.value.trim();
+            if (message) {
+                addMessage(message, 'user');
+                chatInput.value = '';
+                simulateTyping();
+            }
+        });
 
-function sendMessage() {
-  const input = document.getElementById("userInput");
-  const message = input.value.trim();
-  if (message === "") return;
-
-  addMessage(message, "user");
-  input.value = "";
-
-  setTimeout(() => {
-    const reply = getBotReply(message);
-    addMessage(reply, "bot");
-  }, 600);
-}
-
-function getBotReply(msg) {
-  msg = msg.toLowerCase();
-
-  if (msg.includes("hello")) return "Hello! How can I help you?";
-  if (msg.includes("who are you")) return "I am a ChatGPT-style AI website.";
-  if (msg.includes("help")) return "Ask me anything. I will try my best!";
-  if (msg.includes("name")) return "My name is Mini ChatGPT.";
-
-  return "I'm still learning. Please ask something else.";
-}
-</script>
-
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendBtn.click();
+            }
+        });
+    </script>
 </body>
 </html>
