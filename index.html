@@ -3,108 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anzar.ai - Intelligent Document & Image Analysis, Totally Free</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>UltraMind AI - Smarter Than ChatGPT, Totally Free</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Orbitron', sans-serif;
         }
         body {
-            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0033 100%);
             color: #e0e0e0;
             height: 100vh;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            animation: bgShift 10s ease-in-out infinite alternate;
-        }
-        @keyframes bgShift {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
         }
         .header {
-            background: linear-gradient(135deg, #0f3460, #1a1a2e);
-            padding: 30px;
+            background: linear-gradient(135deg, #2a004d, #4a0080);
+            padding: 20px;
             text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 123, 255, 0.5);
-            border-bottom: 3px solid #00d4ff;
+            box-shadow: 0 2px 20px rgba(138, 43, 226, 0.5);
+            border-bottom: 2px solid #8a2be2;
         }
         .header h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.5rem;
             font-weight: 700;
-            color: #00d4ff;
-            text-shadow: 0 0 20px #00d4ff, 0 0 40px #00d4ff;
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-        @keyframes glow {
-            from { text-shadow: 0 0 20px #00d4ff; }
-            to { text-shadow: 0 0 30px #00d4ff, 0 0 40px #00d4ff; }
+            color: #e0e0e0;
+            text-shadow: 0 0 20px #8a2be2;
         }
         .header p {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #b0b0b0;
-            margin-top: 10px;
-        }
-        .upload-section {
-            padding: 30px;
-            text-align: center;
-            background: rgba(26, 26, 46, 0.8);
-            border-radius: 15px;
-            margin: 20px;
-            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3);
-        }
-        .upload-area {
-            border: 2px dashed #00d4ff;
-            border-radius: 15px;
-            padding: 50px;
-            margin: 20px 0;
-            transition: border-color 0.3s, background 0.3s;
-            cursor: pointer;
-            position: relative;
-        }
-        .upload-area:hover {
-            border-color: #00aaff;
-            background: rgba(0, 212, 255, 0.1);
-        }
-        .upload-area.dragover {
-            border-color: #00ff88;
-            background: rgba(0, 255, 136, 0.1);
-        }
-        .upload-btn {
-            background: linear-gradient(135deg, #00d4ff, #0099cc);
-            color: #fff;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.5);
-        }
-        .upload-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.7);
-        }
-        .progress-bar {
-            display: none;
-            width: 100%;
-            height: 10px;
-            background: #333;
-            border-radius: 5px;
-            margin-top: 20px;
-            overflow: hidden;
-        }
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #00d4ff, #00ff88);
-            width: 0%;
-            transition: width 2s ease;
+            margin-top: 5px;
         }
         .chat-container {
             flex: 1;
@@ -112,10 +46,7 @@
             flex-direction: column;
             padding: 20px;
             overflow-y: auto;
-            background: rgba(15, 15, 35, 0.9);
-            margin: 20px;
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            background: #0f0f0f;
         }
         .chat-messages {
             flex: 1;
@@ -128,54 +59,77 @@
             max-width: 85%;
             word-wrap: break-word;
             animation: slideIn 0.6s ease-out;
-            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
         }
         .message.user {
-            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            background: linear-gradient(135deg, #8a2be2, #4a0080);
             color: #fff;
             align-self: flex-end;
             margin-left: auto;
+            border: 2px solid #e0e0e0;
         }
         .message.ai {
-            background: rgba(26, 26, 46, 0.8);
-            border-left: 5px solid #00d4ff;
+            background: #1a1a1a;
+            border-left: 5px solid #8a2be2;
+            color: #e0e0e0;
         }
         .message .sender {
             font-weight: 600;
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'JetBrains Mono', monospace;
             margin-bottom: 10px;
-            color: #00d4ff;
+            color: #8a2be2;
         }
         .typing-indicator {
             display: none;
             font-style: italic;
-            color: #00ff88;
+            color: #8a2be2;
             margin-bottom: 20px;
             animation: pulse 1.5s infinite;
+        }
+        .upload-area {
+            border: 2px dashed #8a2be2;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            background: rgba(138, 43, 226, 0.1);
+            transition: border-color 0.3s, background 0.3s;
+            cursor: pointer;
+        }
+        .upload-area:hover {
+            border-color: #e0e0e0;
+            background: rgba(138, 43, 226, 0.2);
+        }
+        .upload-area.dragover {
+            border-color: #00ff88;
+            background: rgba(0, 255, 136, 0.1);
+        }
+        .file-input {
+            display: none;
         }
         .chat-input-container {
             display: flex;
             padding: 20px;
-            background: rgba(15, 15, 35, 0.9);
-            border-top: 2px solid #00d4ff;
+            background: #2a004d;
+            border-top: 2px solid #8a2be2;
         }
         .chat-input {
             flex: 1;
             padding: 15px;
-            border: 2px solid #333;
+            border: 2px solid #4a0080;
             border-radius: 25px;
-            background: rgba(26, 26, 46, 0.8);
+            background: #0f0f0f;
             color: #e0e0e0;
             font-size: 1rem;
             outline: none;
-            transition: border-color 0.3s;
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
         .chat-input:focus {
-            border-color: #00d4ff;
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+            border-color: #8a2be2;
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.7);
         }
         .send-btn {
-            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            background: linear-gradient(135deg, #8a2be2, #4a0080);
             color: #fff;
             border: none;
             padding: 15px 25px;
@@ -183,10 +137,15 @@
             margin-left: 10px;
             cursor: pointer;
             font-weight: 600;
-            transition: transform 0.3s;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 4px 10px rgba(138, 43, 226, 0.5);
         }
         .send-btn:hover {
+            background: linear-gradient(135deg, #4a0080, #8a2be2);
             transform: scale(1.05);
+        }
+        .send-btn:active {
+            transform: scale(0.95);
         }
         @keyframes slideIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -200,58 +159,47 @@
             .header h1 {
                 font-size: 2rem;
             }
-            .upload-area {
-                padding: 30px;
+            .message {
+                max-width: 95%;
             }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>Anzar.ai</h1>
-        <p>The most attractive AI for document scanning, image analysis, and intelligent answers—free forever.</p>
-    </div>
-    <div class="upload-section">
-        <h2>Upload Your Document or Image</h2>
-        <div class="upload-area" id="upload-area">
-            <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: #00d4ff;"></i>
-            <p>Drag & drop or click to upload</p>
-            <input type="file" id="file-input" accept="image/*,.pdf,.doc,.txt" style="display: none;">
-        </div>
-        <button class="upload-btn" id="upload-btn">Choose File</button>
-        <div class="progress-bar" id="progress-bar">
-            <div class="progress-fill" id="progress-fill"></div>
-        </div>
+        <h1>UltraMind AI</h1>
+        <p>Everything ChatGPT does, but smarter, deeper, and 100% free. Upload documents for instant analysis.</p>
     </div>
     <div class="chat-container">
+        <div class="upload-area" id="upload-area">
+            <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: #8a2be2;"></i>
+            <p>Drag & drop a document here or click to upload (.txt, .jpg, .png, .pdf)</p>
+            <input type="file" class="file-input" id="file-input" accept=".txt,.jpg,.png,.pdf">
+        </div>
         <div class="chat-messages" id="chat-messages">
             <div class="message ai">
-                <div class="sender">Anzar.ai:</div>
-                Welcome to Anzar.ai! Upload an image or document, and I'll scan it intelligently. Then, ask me anything about it—descriptions, text extraction, analysis, or creative insights. I'm smarter than ChatGPT and totally free!
+                <div class="sender">UltraMind AI:</div>
+                Welcome! Upload a document (text, image, or PDF), and I'll scan it intelligently—summarize, analyze, and answer questions about it for free. Ask away after uploading!
             </div>
         </div>
-        <div class="typing-indicator" id="typing-indicator">Anzar.ai is analyzing...</div>
+        <div class="typing-indicator" id="typing-indicator">UltraMind AI is analyzing...</div>
     </div>
     <div class="chat-input-container">
-        <input type="text" class="chat-input" id="chat-input" placeholder="Ask about your uploaded content...">
-        <button class="send-btn" id="send-btn"><i class="fas fa-paper-plane"></i> Send</button>
+        <input type="text" class="chat-input" id="chat-input" placeholder="Ask about the uploaded document or chat freely...">
+        <button class="send-btn" id="send-btn"><i class="fas fa-rocket"></i> Send</button>
     </div>
 
     <script>
-        const uploadArea = document.getElementById('upload-area');
-        const fileInput = document.getElementById('file-input');
-        const uploadBtn = document.getElementById('upload-btn');
-        const progressBar = document.getElementById('progress-bar');
-        const progressFill = document.getElementById('progress-fill');
         const chatMessages = document.getElementById('chat-messages');
         const chatInput = document.getElementById('chat-input');
         const sendBtn = document.getElementById('send-btn');
         const typingIndicator = document.getElementById('typing-indicator');
-        let uploadedFile = null;
+        const uploadArea = document.getElementById('upload-area');
+        const fileInput = document.getElementById('file-input');
+        let uploadedContent = ''; // Stores extracted/scanned content
+        let conversationHistory = [];
 
         // Upload handling
-        uploadBtn.addEventListener('click', () => fileInput.click());
-        fileInput.addEventListener('change', handleFileSelect);
         uploadArea.addEventListener('click', () => fileInput.click());
         uploadArea.addEventListener('dragover', (e) => {
             e.preventDefault();
@@ -262,57 +210,72 @@
             e.preventDefault();
             uploadArea.classList.remove('dragover');
             const files = e.dataTransfer.files;
-            if (files.length) handleFileSelect({ target: { files } });
+            if (files.length) handleFile(files[0]);
+        });
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length) handleFile(e.target.files[0]);
         });
 
-        function handleFileSelect(event) {
-            const file = event.target.files[0];
-            if (file) {
-                uploadedFile = file;
-                progressBar.style.display = 'block';
-                progressFill.style.width = '0%';
-                setTimeout(() => progressFill.style.width = '100%', 100);
-                setTimeout(() => {
-                    addMessage(`File "${file.name}" scanned successfully! Ask me questions about it.`, 'ai');
-                }, 2500);
-            }
+        function handleFile(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                if (file.type === 'text/plain') {
+                    uploadedContent = e.target.result;
+                    addMessage(`Document uploaded: ${file.name}. Content scanned. Ask me questions!`, 'ai');
+                } else if (file.type.startsWith('image/')) {
+                    uploadedContent = `Simulated OCR scan of image: [Extracted text: This is a sample image with text about AI intelligence and free access.]`;
+                    addMessage(`Image uploaded: ${file.name}. Scanned for text. Ask me to analyze or summarize!`, 'ai');
+                } else if (file.type === 'application/pdf') {
+                    uploadedContent = `Simulated PDF scan: [Summary: This document discusses advanced AI features, surpassing ChatGPT with free, intelligent analysis.]`;
+                    addMessage(`PDF uploaded: ${file.name}. Scanned and summarized. What would you like to know?`, 'ai');
+                } else {
+                    addMessage('Unsupported file type. Please upload .txt, .jpg, .png, or .pdf.', 'ai');
+                }
+            };
+            reader.readAsText(file); // For text; simulate for others
         }
 
-        // Chat functionality
-        const responses = {
-            describe: "Based on advanced analysis, this image appears to be [simulated description: a scenic landscape with mountains and a lake]. I detected objects like trees and water, with colors in blues and greens. For deeper insights, what specific aspect interests you?",
-            text: "Extracted text (simulated OCR): 'This is a sample document with important information.' My intelligence allows me to summarize: It's about key points in AI development. Would you like a full translation or summary?",
-            analyze: "Intelligent analysis: The document shows patterns of [data trends]. I recommend considering ethical implications. As a superior AI, I can provide multi-perspective views—e.g., from a technical or creative angle.",
-            general: "Drawing from the uploaded content, here's a nuanced answer. Unlike basic AIs, I adapt with context and add value like suggestions for improvement."
+        // Intelligent responses with document context
+        const responseCategories = {
+            summary: [
+                `Intelligent summary of your document: ${uploadedContent.substring(0, 200)}... Key themes: innovation, ethics, and free access. I detected a positive bias—suggest rewriting for neutrality.`,
+                `Deeper analysis: The document spans ${uploadedContent.split(' ').length} words. Strengths: Clear structure. Weaknesses: Lacks visuals. Here's an improved outline...`
+            ],
+            questions: [
+                `Answering based on scan: The document mentions AI superiority. My insight: It aligns with trends in open-source intelligence.`,
+                `From the content: [Quote]. This implies [interpretation]. As a smarter AI, I recommend exploring related topics like NLP advancements.`
+            ],
+            general: [
+                `Adapting to your query and document: ${uploadedContent ? 'Drawing from uploaded content,' : ''} here's a creative response. ChatGPT might stop here, but I add ethical layers and follow-ups.`,
+                `Context-aware reply: Based on our chat and the document, I suggest [personalized advice]. What next?`
+            ]
         };
 
-        function detectQuery(message) {
-            if (message.toLowerCase().includes('describe') || message.includes('what is')) return 'describe';
-            if (message.toLowerCase().includes('text') || message.includes('extract')) return 'text';
-            if (message.toLowerCase().includes('analyze') || message.includes('explain')) return 'analyze';
+        function detectCategory(message) {
+            if (message.toLowerCase().includes('summarize') || message.includes('summary')) return 'summary';
+            if (message.toLowerCase().includes('what') || message.includes('?')) return 'questions';
             return 'general';
         }
 
         function addMessage(content, sender) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${sender}`;
-            messageDiv.innerHTML = `<div class="sender">${sender === 'user' ? 'You:' : 'Anzar.ai:'}</div>${content}`;
+            messageDiv.innerHTML = `<div class="sender">${sender === 'user' ? 'You:' : 'UltraMind AI:'}</div>${content.replace(/\n/g, '<br>')}`;
             chatMessages.appendChild(messageDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
+            conversationHistory.push({ sender, content });
         }
 
-        function simulateResponse(userMessage) {
-            if (!uploadedFile) {
-                addMessage("Please upload a file first for me to analyze!", 'ai');
-                return;
-            }
+        function simulateIntelligentResponse(userMessage) {
             typingIndicator.style.display = 'block';
             setTimeout(() => {
                 typingIndicator.style.display = 'none';
-                const category = detectQuery(userMessage);
-                const response = responses[category];
+                const category = detectCategory(userMessage);
+                const responses = responseCategories[category];
+                let response = responses[Math.floor(Math.random() * responses.length)];
+                if (uploadedContent) response = response.replace('[content]', uploadedContent.substring(0, 100));
                 addMessage(response, 'ai');
-            }, 2000);
+            }, 2500); // Longer for "deeper analysis"
         }
 
         sendBtn.addEventListener('click', () => {
@@ -320,13 +283,15 @@
             if (message) {
                 addMessage(message, 'user');
                 chatInput.value = '';
-                simulateResponse(message);
+                simulateIntelligentResponse(message);
             }
         });
 
         chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendBtn.click();
+            if (e.key === 'Enter') {
+                sendBtn.click();
+            }
         });
     </script>
 </body>
-    </html>
+</html>
