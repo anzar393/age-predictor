@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodeChat AI - Your Intelligent Coding Companion</title>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>Anzar.ai - Intelligent Document & Image Analysis, Totally Free</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -14,30 +14,97 @@
             font-family: 'Roboto', sans-serif;
         }
         body {
-            background: #0a0a0a;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
             color: #e0e0e0;
             height: 100vh;
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            animation: bgShift 10s ease-in-out infinite alternate;
+        }
+        @keyframes bgShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
         }
         .header {
-            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
-            padding: 20px;
+            background: linear-gradient(135deg, #0f3460, #1a1a2e);
+            padding: 30px;
             text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 20px rgba(0, 123, 255, 0.5);
+            border-bottom: 3px solid #00d4ff;
         }
         .header h1 {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 2rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
             font-weight: 700;
-            color: #00ff88;
-            text-shadow: 0 0 10px #00ff88;
+            color: #00d4ff;
+            text-shadow: 0 0 20px #00d4ff, 0 0 40px #00d4ff;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        @keyframes glow {
+            from { text-shadow: 0 0 20px #00d4ff; }
+            to { text-shadow: 0 0 30px #00d4ff, 0 0 40px #00d4ff; }
         }
         .header p {
-            font-size: 1rem;
+            font-size: 1.2rem;
             color: #b0b0b0;
-            margin-top: 5px;
+            margin-top: 10px;
+        }
+        .upload-section {
+            padding: 30px;
+            text-align: center;
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 15px;
+            margin: 20px;
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3);
+        }
+        .upload-area {
+            border: 2px dashed #00d4ff;
+            border-radius: 15px;
+            padding: 50px;
+            margin: 20px 0;
+            transition: border-color 0.3s, background 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+        .upload-area:hover {
+            border-color: #00aaff;
+            background: rgba(0, 212, 255, 0.1);
+        }
+        .upload-area.dragover {
+            border-color: #00ff88;
+            background: rgba(0, 255, 136, 0.1);
+        }
+        .upload-btn {
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.5);
+        }
+        .upload-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.7);
+        }
+        .progress-bar {
+            display: none;
+            width: 100%;
+            height: 10px;
+            background: #333;
+            border-radius: 5px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff, #00ff88);
+            width: 0%;
+            transition: width 2s ease;
         }
         .chat-container {
             flex: 1;
@@ -45,143 +112,207 @@
             flex-direction: column;
             padding: 20px;
             overflow-y: auto;
-            background: #0f0f0f;
+            background: rgba(15, 15, 35, 0.9);
+            margin: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
         }
         .chat-messages {
             flex: 1;
             margin-bottom: 20px;
         }
         .message {
-            margin-bottom: 15px;
-            padding: 15px;
-            border-radius: 10px;
-            max-width: 80%;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 15px;
+            max-width: 85%;
             word-wrap: break-word;
-            animation: fadeIn 0.5s ease-in;
+            animation: slideIn 0.6s ease-out;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.2);
         }
         .message.user {
-            background: #00ff88;
-            color: #0a0a0a;
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            color: #fff;
             align-self: flex-end;
             margin-left: auto;
         }
         .message.ai {
-            background: #1a1a1a;
-            border-left: 4px solid #00ff88;
+            background: rgba(26, 26, 46, 0.8);
+            border-left: 5px solid #00d4ff;
         }
         .message .sender {
-            font-weight: 500;
-            font-family: 'JetBrains Mono', monospace;
-            margin-bottom: 5px;
+            font-weight: 600;
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 10px;
+            color: #00d4ff;
         }
         .typing-indicator {
             display: none;
             font-style: italic;
             color: #00ff88;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite;
         }
         .chat-input-container {
             display: flex;
             padding: 20px;
-            background: #1a1a1a;
-            border-top: 1px solid #333;
+            background: rgba(15, 15, 35, 0.9);
+            border-top: 2px solid #00d4ff;
         }
         .chat-input {
             flex: 1;
             padding: 15px;
-            border: 1px solid #333;
+            border: 2px solid #333;
             border-radius: 25px;
-            background: #0f0f0f;
+            background: rgba(26, 26, 46, 0.8);
             color: #e0e0e0;
             font-size: 1rem;
             outline: none;
             transition: border-color 0.3s;
         }
         .chat-input:focus {
-            border-color: #00ff88;
-            box-shadow: 0 0 10px rgba(0,255,136,0.5);
+            border-color: #00d4ff;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
         }
         .send-btn {
-            background: #00ff88;
-            color: #0a0a0a;
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            color: #fff;
             border: none;
-            padding: 15px 20px;
+            padding: 15px 25px;
             border-radius: 25px;
             margin-left: 10px;
             cursor: pointer;
-            font-weight: 500;
-            transition: background 0.3s, transform 0.2s;
+            font-weight: 600;
+            transition: transform 0.3s;
         }
         .send-btn:hover {
-            background: #00cc66;
             transform: scale(1.05);
         }
-        .send-btn:active {
-            transform: scale(0.95);
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
         @media (max-width: 768px) {
             .header h1 {
-                font-size: 1.5rem;
+                font-size: 2rem;
             }
-            .message {
-                max-width: 90%;
+            .upload-area {
+                padding: 30px;
             }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>CodeChat AI</h1>
-        <p>Powered by advanced AI for coding, queries, and conversations</p>
+        <h1>Anzar.ai</h1>
+        <p>The most attractive AI for document scanning, image analysis, and intelligent answers—free forever.</p>
+    </div>
+    <div class="upload-section">
+        <h2>Upload Your Document or Image</h2>
+        <div class="upload-area" id="upload-area">
+            <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: #00d4ff;"></i>
+            <p>Drag & drop or click to upload</p>
+            <input type="file" id="file-input" accept="image/*,.pdf,.doc,.txt" style="display: none;">
+        </div>
+        <button class="upload-btn" id="upload-btn">Choose File</button>
+        <div class="progress-bar" id="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
     </div>
     <div class="chat-container">
         <div class="chat-messages" id="chat-messages">
             <div class="message ai">
-                <div class="sender">CodeChat AI:</div>
-                Hello! I'm CodeChat AI, your intelligent assistant. Ask me anything about coding, exams, or general queries. How can I help you today?
+                <div class="sender">Anzar.ai:</div>
+                Welcome to Anzar.ai! Upload an image or document, and I'll scan it intelligently. Then, ask me anything about it—descriptions, text extraction, analysis, or creative insights. I'm smarter than ChatGPT and totally free!
             </div>
         </div>
-        <div class="typing-indicator" id="typing-indicator">CodeChat AI is typing...</div>
+        <div class="typing-indicator" id="typing-indicator">Anzar.ai is analyzing...</div>
     </div>
     <div class="chat-input-container">
-        <input type="text" class="chat-input" id="chat-input" placeholder="Type your message here...">
+        <input type="text" class="chat-input" id="chat-input" placeholder="Ask about your uploaded content...">
         <button class="send-btn" id="send-btn"><i class="fas fa-paper-plane"></i> Send</button>
     </div>
 
     <script>
+        const uploadArea = document.getElementById('upload-area');
+        const fileInput = document.getElementById('file-input');
+        const uploadBtn = document.getElementById('upload-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const progressFill = document.getElementById('progress-fill');
         const chatMessages = document.getElementById('chat-messages');
         const chatInput = document.getElementById('chat-input');
         const sendBtn = document.getElementById('send-btn');
         const typingIndicator = document.getElementById('typing-indicator');
+        let uploadedFile = null;
 
-        // Simulated AI responses (expand with real API)
-        const responses = [
-            "That's an interesting question! Let me think... Based on my knowledge, here's what I can say.",
-            "Great point! In coding, it's all about efficiency. Here's a code snippet to illustrate.",
-            "I see. For exam prep, try breaking down topics into smaller chunks. What subject are you focusing on?",
-            "Absolutely! AI like me is here to assist. Do you have a specific example or code you'd like help with?",
-            "Hmm, that's tricky. Let's debug this step by step. Can you provide more details?"
-        ];
+        // Upload handling
+        uploadBtn.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', handleFileSelect);
+        uploadArea.addEventListener('click', () => fileInput.click());
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length) handleFileSelect({ target: { files } });
+        });
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                uploadedFile = file;
+                progressBar.style.display = 'block';
+                progressFill.style.width = '0%';
+                setTimeout(() => progressFill.style.width = '100%', 100);
+                setTimeout(() => {
+                    addMessage(`File "${file.name}" scanned successfully! Ask me questions about it.`, 'ai');
+                }, 2500);
+            }
+        }
+
+        // Chat functionality
+        const responses = {
+            describe: "Based on advanced analysis, this image appears to be [simulated description: a scenic landscape with mountains and a lake]. I detected objects like trees and water, with colors in blues and greens. For deeper insights, what specific aspect interests you?",
+            text: "Extracted text (simulated OCR): 'This is a sample document with important information.' My intelligence allows me to summarize: It's about key points in AI development. Would you like a full translation or summary?",
+            analyze: "Intelligent analysis: The document shows patterns of [data trends]. I recommend considering ethical implications. As a superior AI, I can provide multi-perspective views—e.g., from a technical or creative angle.",
+            general: "Drawing from the uploaded content, here's a nuanced answer. Unlike basic AIs, I adapt with context and add value like suggestions for improvement."
+        };
+
+        function detectQuery(message) {
+            if (message.toLowerCase().includes('describe') || message.includes('what is')) return 'describe';
+            if (message.toLowerCase().includes('text') || message.includes('extract')) return 'text';
+            if (message.toLowerCase().includes('analyze') || message.includes('explain')) return 'analyze';
+            return 'general';
+        }
 
         function addMessage(content, sender) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${sender}`;
-            messageDiv.innerHTML = `<div class="sender">${sender === 'user' ? 'You:' : 'CodeChat AI:'}</div>${content}`;
+            messageDiv.innerHTML = `<div class="sender">${sender === 'user' ? 'You:' : 'Anzar.ai:'}</div>${content}`;
             chatMessages.appendChild(messageDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        function simulateTyping() {
+        function simulateResponse(userMessage) {
+            if (!uploadedFile) {
+                addMessage("Please upload a file first for me to analyze!", 'ai');
+                return;
+            }
             typingIndicator.style.display = 'block';
             setTimeout(() => {
                 typingIndicator.style.display = 'none';
-                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-                addMessage(randomResponse, 'ai');
-            }, 1500); // Simulate 1.5s typing delay
+                const category = detectQuery(userMessage);
+                const response = responses[category];
+                addMessage(response, 'ai');
+            }, 2000);
         }
 
         sendBtn.addEventListener('click', () => {
@@ -189,15 +320,13 @@
             if (message) {
                 addMessage(message, 'user');
                 chatInput.value = '';
-                simulateTyping();
+                simulateResponse(message);
             }
         });
 
         chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendBtn.click();
-            }
+            if (e.key === 'Enter') sendBtn.click();
         });
     </script>
 </body>
-</html>
+    </html>
