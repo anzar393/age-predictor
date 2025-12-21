@@ -1,142 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script type="text/javascript" src="https://filestrue.com/script_include.php?id=1862261"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini ChatGPT</title>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ExamMaster - Your Ultimate Exam Prep Hub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        * {margin:0;padding:0;box-sizing:border-box;font-family:'Montserrat',sans-serif;}
-        body {background: linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#333;overflow-x:hidden;min-height:100vh;}
-        .container {display:none;max-width:1200px;margin:0 auto;padding:20px;}
-        .header {text-align:center;padding:50px 0;background:rgba(255,255,255,0.1);border-radius:15px;margin-bottom:30px;backdrop-filter:blur(10px);}
-        .header h1 {font-size:3rem;font-weight:700;color:#fff;text-shadow:2px 2px 4px rgba(0,0,0,0.3);}
-        .header p {font-size:1.2rem;color:#e0e0e0;margin-top:10px;}
-        .articles {display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;}
-        .article-card {background:rgba(255,255,255,0.95);border-radius:15px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);transition:transform 0.3s ease, box-shadow 0.3s ease;overflow:hidden;}
-        .article-card:hover {transform:translateY(-10px);box-shadow:0 20px 40px rgba(0,0,0,0.2);}
-        .article-card img {width:100%;height:200px;object-fit:cover;border-radius:10px;margin-bottom:15px;}
-        .article-card h3 {font-size:1.5rem;font-weight:600;color:#333;margin-bottom:10px;}
-        .article-card p {color:#666;line-height:1.6;}
-        .article-card .read-more {display:inline-block;margin-top:15px;color:#667eea;text-decoration:none;font-weight:500;transition:color 0.3s;}
-        .article-card .read-more:hover {color:#764ba2;}
-        .modal {display:flex;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);justify-content:center;align-items:center;z-index:1000;}
-        .modal-content {background:#fff;padding:40px;border-radius:15px;width:90%;max-width:400px;box-shadow:0 10px 30px rgba(0,0,0,0.3);text-align:center;}
-        .modal h2 {margin-bottom:20px;color:#333;}
-        .form-group {margin-bottom:15px;text-align:left;}
-        .form-group label {display:block;margin-bottom:5px;font-weight:500;}
-        .form-group input {width:100%;padding:10px;border:1px solid #ddd;border-radius:5px;font-size:1rem;}
-        .btn {background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;padding:12px 20px;border-radius:5px;cursor:pointer;font-size:1rem;font-weight:500;transition:background 0.3s;width:100%;}
-        .btn:hover {background:linear-gradient(135deg,#764ba2,#667eea);}
-        .toggle {margin-top:15px;color:#667eea;cursor:pointer;text-align:center;}
-        .footer {text-align:center;padding:20px;background:rgba(255,255,255,0.1);color:#fff;margin-top:50px;border-radius:15px;}
-        @media(max-width:768px){.header h1{font-size:2rem;}.articles{grid-template-columns:1fr;}}
-    </style>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #343541;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+header {
+  background: #202123;
+  padding: 15px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+#chat-box {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px;
+}
+
+.message {
+  max-width: 75%;
+  padding: 10px 14px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  line-height: 1.4;
+}
+
+.user {
+  background: #0b5cff;
+  align-self: flex-end;
+  margin-left: auto;
+}
+
+.bot {
+  background: #444654;
+  align-self: flex-start;
+  margin-right: auto;
+}
+
+footer {
+  display: flex;
+  padding: 10px;
+  background: #202123;
+}
+
+input {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+}
+
+button {
+  margin-left: 10px;
+  padding: 10px 15px;
+  font-size: 16px;
+  background: #0b5cff;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0848c4;
+}
+</style>
 </head>
+
 <body>
-    <!-- Login/Signup Modal -->
-    <div id="auth-modal" class="modal">
-        <div class="modal-content">
-            <h2 id="modal-title">Sign Up</h2>
-            <form id="auth-form">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" required>
-                </div>
-                <button type="submit" class="btn">Submit</button>
-            </form>
-            <div class="toggle" onclick="toggleAuth()">Already have an account? Log In</div>
-        </div>
-    </div>
 
-    <!-- Main Content -->
-    <div class="container" id="main-content">
-        <div class="header">
-            <h1>Welcome to ExamMaster</h1>
-            <p>Boost your exams with tips, guides & proven strategies!</p>
-        </div>
-        <div class="articles">
-            <!-- Template Articles -->
-            <div class="article-card">
-                <img src="https://via.placeholder.com/300x200/ff7f50/fff?text=Study+Tips" alt="Study Tips">
-                <h3>Top 5 Study Methods to Ace Exams</h3>
-                <p>Explore active recall, spaced repetition, and mind mapping techniques to retain information effectively and improve performance.</p>
-                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
-            </div>
+<header>Mini ChatGPT</header>
 
-            <div class="article-card">
-                <img src="https://via.placeholder.com/300x200/6a5acd/fff?text=Math+Tricks" alt="Math Tricks">
-                <h3>Math Tricks for Faster Problem Solving</h3>
-                <p>Learn shortcuts, formulas, and mental math strategies to solve complex problems quickly and boost your confidence.</p>
-                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
-            </div>
+<div id="chat-box"></div>
 
-            <div class="article-card">
-                <img src="https://via.placeholder.com/300x200/20b2aa/fff?text=Time+Mgmt" alt="Time Management">
-                <h3>Effective Time Management for Students</h3>
-                <p>Master the Pomodoro technique, schedule planning, and prioritization to make the most of your study hours.</p>
-                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
-            </div>
+<footer>
+  <input type="text" id="userInput" placeholder="Send a message..." />
+  <button onclick="sendMessage()">Send</button>
+</footer>
 
-            <div class="article-card">
-                <img src="https://via.placeholder.com/300x200/ff4500/fff?text=Motivation" alt="Motivation">
-                <h3>Overcome Exam Anxiety and Stay Motivated</h3>
-                <p>Psychological tips, positive habits, and motivational exercises to stay calm and focused during exams.</p>
-                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
-            </div>
+<script>
+const chatBox = document.getElementById("chat-box");
 
-            <div class="article-card">
-                <img src="https://via.placeholder.com/300x200/2e8b57/fff?text=Science+Tips" alt="Science Exams">
-                <h3>Science Exam Prep: Tips & Tricks</h3>
-                <p>Step-by-step guides for biology, chemistry, and physics concepts, with mnemonics and visual learning aids.</p>
-                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
-            </div>
+function addMessage(text, className) {
+  const div = document.createElement("div");
+  div.className = "message " + className;
+  div.innerText = text;
+  chatBox.appendChild(div);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
 
-            <div class="article-card">
-                <img src="https://via.placeholder.com/300x200/ff1493/fff?text=Career+Guides" alt="Career Advice">
-                <h3>Career Guidance Post Exams</h3>
-                <p>Resume building, interview prep, and professional growth tips to help students transition successfully from exams to career.</p>
-                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </div>
+function sendMessage() {
+  const input = document.getElementById("userInput");
+  const message = input.value.trim();
+  if (message === "") return;
 
-        <div class="footer">
-            <p>&copy; 2025 ExamMaster. All rights reserved. | Follow us on <i class="fab fa-twitter"></i> <i class="fab fa-facebook"></i></p>
-        </div>
-    </div>
+  addMessage(message, "user");
+  input.value = "";
 
-    <script>
-        let isSignUp = true;
-        const modal = document.getElementById('auth-modal');
-        const mainContent = document.getElementById('main-content');
-        const form = document.getElementById('auth-form');
-        const modalTitle = document.getElementById('modal-title');
+  setTimeout(() => {
+    const reply = getBotReply(message);
+    addMessage(reply, "bot");
+  }, 600);
+}
 
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            if(email && password){
-                modal.style.display = 'none';
-                mainContent.style.display = 'block';
-                alert(isSignUp ? 'Account created successfully!' : 'Logged in successfully!');
-            }
-        });
+function getBotReply(msg) {
+  msg = msg.toLowerCase();
 
-        function toggleAuth() {
-            isSignUp = !isSignUp;
-            modalTitle.textContent = isSignUp ? 'Sign Up' : 'Log In';
-            document.querySelector('.toggle').textContent = isSignUp ? 'Already have an account? Log In' : 'Don\'t have an account? Sign Up';
-        }
-    </script>
+  if (msg.includes("hello")) return "Hello! How can I help you?";
+  if (msg.includes("who are you")) return "I am a ChatGPT-style AI website.";
+  if (msg.includes("help")) return "Ask me anything. I will try my best!";
+  if (msg.includes("name")) return "My name is Mini ChatGPT.";
+
+  return "I'm still learning. Please ask something else.";
+}
+</script>
+
 </body>
 </html>
-
-<script type="text/javascript" src="https://pl28285118.effectivegatecpm.com/cf/67/c7/cf67c7babc930bd2d9959101c9b54c28.js"></script>
