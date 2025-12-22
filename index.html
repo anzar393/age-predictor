@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ExamMaster: Intelligent exam prep with AI chatbot, recommendations, and analytics.">
+    <meta name="keywords" content="exam tips, AI study help, personalized learning, math prep">
     <title>ExamMaster - Your Ultimate Exam Prep Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
     <style>
         * {
             margin: 0;
@@ -18,9 +21,14 @@
             color: #333;
             overflow-x: hidden;
             min-height: 100vh;
+            transition: background 0.3s;
+        }
+        body.dark-mode {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: #ecf0f1;
         }
         .container {
-            display: none; /* Hidden until login */
+            display: none;
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
@@ -32,6 +40,10 @@
             border-radius: 15px;
             margin-bottom: 30px;
             backdrop-filter: blur(10px);
+            position: relative;
+        }
+        .header.dark-mode-bg {
+            background: rgba(0, 0, 0, 0.2);
         }
         .header h1 {
             font-size: 3rem;
@@ -43,6 +55,32 @@
             font-size: 1.2rem;
             color: #e0e0e0;
             margin-top: 10px;
+        }
+        .search-bar {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .search-bar input {
+            width: 50%;
+            padding: 10px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .dark-mode-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            color: #fff;
+            font-size: 1.2rem;
         }
         .articles {
             display: grid;
@@ -56,6 +94,11 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             overflow: hidden;
+            position: relative;
+        }
+        body.dark-mode .article-card {
+            background: rgba(0, 0, 0, 0.8);
+            color: #ecf0f1;
         }
         .article-card:hover {
             transform: translateY(-10px);
@@ -74,9 +117,15 @@
             color: #333;
             margin-bottom: 10px;
         }
+        body.dark-mode .article-card h3 {
+            color: #ecf0f1;
+        }
         .article-card p {
             color: #666;
             line-height: 1.6;
+        }
+        body.dark-mode .article-card p {
+            color: #bdc3c7;
         }
         .article-card .read-more {
             display: inline-block;
@@ -88,6 +137,97 @@
         }
         .article-card .read-more:hover {
             color: #764ba2;
+        }
+        .article-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        .like-btn {
+            background: none;
+            border: none;
+            color: #ccc;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+        .like-btn.liked {
+            color: #e74c3c;
+        }
+        .view-count {
+            font-size: 0.9rem;
+            color: #999;
+        }
+        .favorites-section, .recommendations-section, .analytics-section {
+            margin-top: 50px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+        }
+        body.dark-mode .favorites-section, body.dark-mode .recommendations-section, body.dark-mode .analytics-section {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        .favorites-section h2, .recommendations-section h2, .analytics-section h2 {
+            color: #fff;
+            text-align: center;
+        }
+        .chatbot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            height: 400px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: none;
+            flex-direction: column;
+            z-index: 1001;
+        }
+        .chatbot-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            padding: 10px;
+            border-radius: 15px 15px 0 0;
+            text-align: center;
+        }
+        .chatbot-messages {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        .chatbot-input {
+            display: flex;
+            padding: 10px;
+        }
+        .chatbot-input input {
+            flex: 1;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .chatbot-input button {
+            margin-left: 5px;
+            padding: 5px 10px;
+            background: #667eea;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .chatbot-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #667eea;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            z-index: 1002;
         }
         .modal {
             display: flex;
@@ -165,6 +305,10 @@
             .articles {
                 grid-template-columns: 1fr;
             }
+            .chatbot {
+                width: 90%;
+                height: 300px;
+            }
         }
     </style>
 </head>
@@ -179,8 +323,8 @@
                     <input type="email" id="email" required>
                 </div>
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" required>
+                    <label for="password">Password (min 6 chars)</label>
+                    <input type="password" id="password" required minlength="6">
                 </div>
                 <button type="submit" class="btn">Submit</button>
             </form>
@@ -193,80 +337,99 @@
         <div class="header">
             <h1>Welcome to ExamMaster</h1>
             <p>Unlock your potential with expert exam tips, strategies, and resources.</p>
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Search articles...">
+            </div>
+            <button class="dark-mode-toggle" onclick="toggleDarkMode()"><i class="fas fa-moon"></i></button>
         </div>
-        <div class="articles">
-            <!-- Article 1 -->
-            <div class="article-card">
-                <img src="https://via.placeholder.com/300x200/667eea/ffffff?text=Study+Tips" alt="Study Tips">
-                <h3>10 Proven Study Techniques for Exam Success</h3>
-                <p>Discover active recall, spaced repetition, and more to ace your exams. These modern methods are backed by neuroscience and can boost retention by up to 50%.</p>
-                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+        <div class="articles" id="articles-container">
+            <!-- Articles loaded dynamically -->
+        </div>
+        <div class="recommendations-section">
+            <h2>Recommended for You</h2>
+            <div class="articles" id="recommendations-container">
+                <!-- Recommendations loaded dynamically -->
             </div>
-            <!-- Article 2 -->
-            <div class="article-card">
-                <img src="https://via.placeholder.com/300x200/764ba2/ffffff?text=Math+Prep" alt="Math Prep">
-                <h3>Mastering Math: From Basics to Advanced Calculus</h3>
-                <p>A comprehensive guide to conquering math exams. Includes interactive examples, common pitfalls, and tips for visualizing complex problems.</p>
-                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="favorites-section">
+            <h2>Your Favorites</h2>
+            <div class="articles" id="favorites-container">
+                <!-- Favorites loaded dynamically -->
             </div>
-            <!-- Article 3 -->
-            <div class="article-card">
-                <img src="https://via.placeholder.com/300x200/667eea/ffffff?text=Time+Management" alt="Time Management">
-                <h3>Time Management Hacks for Busy Students</h3>
-                <p>Learn to juggle studies, work, and life. Our blog covers Pomodoro techniques, apps, and real-life success stories from top performers.</p>
-                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
-            </div>
-            <!-- Article 4 -->
-            <div class="article-card">
-                <img src="https://via.placeholder.com/300x200/764ba2/ffffff?text=Motivation" alt="Motivation">
-                <h3>Staying Motivated: Overcoming Exam Anxiety</h3>
-                <p>Psychological insights and practical advice to build resilience. Featuring guest posts from psychologists and motivational speakers.</p>
-                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
-            </div>
-            <!-- Article 5 -->
-            <div class="article-card">
-                <img src="https://via.placeholder.com/300x200/667eea/ffffff?text=Science+Exams" alt="Science Exams">
-                <h3>Cracking Science Exams: Biology, Chemistry, Physics</h3>
-                <p>In-depth breakdowns of key concepts, experiment simulations, and mnemonics to remember formulas. Perfect for STEM students.</p>
-                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
-            </div>
-            <!-- Article 6 -->
-            <div class="article-card">
-                <img src="https://via.placeholder.com/300x200/764ba2/ffffff?text=Career+Advice" alt="Career Advice">
-                <h3>From Exams to Careers: Building Your Future</h3>
-                <p>Post-exam planning: Resume tips, interview prep, and industry insights. Attract recruiters with our modern career guides.</p>
-                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
-            </div>
+        </div>
+        <div class="analytics-section">
+            <h2>Your Activity Stats</h2>
+            <p id="analytics-data">Loading...</p>
         </div>
         <div class="footer">
             <p>&copy; 2023 ExamMaster. All rights reserved. | Follow us on <i class="fab fa-twitter"></i> <i class="fab fa-facebook"></i></p>
         </div>
     </div>
 
+    <!-- Chatbot -->
+    <button class="chatbot-toggle" onclick="toggleChatbot()"><i class="fas fa-robot"></i></button>
+    <div class="chatbot" id="chatbot">
+        <div class="chatbot-header">Exam AI Assistant</div>
+        <div class="chatbot-messages" id="chat-messages">
+            <p><strong>AI:</strong> Hi! Ask me about exam tips, study strategies, or motivation!</p>
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="chat-input" placeholder="Type your question...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+        AOS.init();
+
         let isSignUp = true;
+        let articles = [
+            { id: 1, title: "10 Proven Study Techniques for Exam Success", content: "Discover active recall, spaced repetition, and more...", img: "https://via.placeholder.com/300x200/667eea/ffffff?text=Study+Tips", views: 0, likes: 0 },
+            { id: 2, title: "Mastering Math: From Basics to Advanced Calculus", content: "A comprehensive guide to conquering math exams...", img: "https://via.placeholder.com/300x200/764ba2/ffffff?text=Math+Prep", views: 0, likes: 0 },
+            { id: 3, title: "Time Management Hacks for Busy Students", content: "Learn to juggle studies, work, and life...", img: "https://via.placeholder.com/300x200/667eea/ffffff?text=Time+Management", views: 0, likes: 0 },
+            { id: 4, title: "Staying Motivated: Overcoming Exam Anxiety", content: "Psychological insights and practical advice...", img: "https://via.placeholder.com/300x200/764ba2/ffffff?text=Motivation", views: 0, likes: 0 },
+            { id: 5, title: "Cracking Science Exams: Biology, Chemistry, Physics", content: "In-depth breakdowns of key concepts...", img: "https://via.placeholder.com/300x200/667eea/ffffff?text=Science+Exams", views: 0, likes: 0 },
+            { id: 6, title: "From Exams to Careers: Building Your Future", content: "Post-exam planning: Resume tips...", img: "https://via.placeholder.com/300x200/764ba2/ffffff?text=Career+Advice", views: 0, likes: 0 }
+        ];
+        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+        let userStats = JSON.parse(localStorage.getItem('userStats')) || { views: 0, likes: 0 };
+
         const modal = document.getElementById('auth-modal');
         const mainContent = document.getElementById('main-content');
         const form = document.getElementById('auth-form');
         const modalTitle = document.getElementById('modal-title');
+        const searchInput = document.getElementById('search-input');
+        const articlesContainer = document.getElementById('articles-container');
+        const recommendationsContainer = document.getElementById('recommendations-container');
+        const favoritesContainer = document.getElementById('favorites-container');
+        const analyticsData = document.getElementById('analytics-data');
 
+        // Load articles
+        function loadArticles(container, articleList) {
+            container.innerHTML = '';
+            articleList.forEach(article => {
+                const card = document.createElement('div');
+                card.className = 'article-card';
+                card.setAttribute('data-aos', 'fade-up');
+                card.innerHTML = `
+                    <img src="${article.img}" alt="${article.title}">
+                    <h3>${article.title}</h3>
+                    <p>${article.content}</p>
+                    <div class="article-actions">
+                        <button class="like-btn ${favorites.includes(article.id) ? 'liked' : ''}" onclick="toggleLike(${article.id})"><i class="fas fa-heart"></i></button>
+                        <span class="view-count">Views: ${article.views}</span>
+                    </div>
+                    <a href="#" class="read-more" onclick="viewArticle(${article.id})">Read More <i class="fas fa-arrow-right"></i></a>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Authentication
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            // Simulate authentication (in real app, send to server)
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            if (email && password) {
-                modal.style.display = 'none';
-                mainContent.style.display = 'block';
-                alert(isSignUp ? 'Account created successfully!' : 'Logged in successfully!');
-            }
-        });
-
-        function toggleAuth() {
-            isSignUp = !isSignUp;
-            modalTitle.textContent = isSignUp ? 'Sign Up' : 'Log In';
-            document.querySelector('.toggle').textContent = isSignUp ? 'Already have an account? Log In' : 'Don\'t have an account? Sign Up';
-        }
-    </script>
-</body>
-</html>
+            if (email && password.length >= 6) {
+                localStorage.setItem('
